@@ -4,7 +4,6 @@
 
 import os
 os.getcwd()
-#os.chdir('Documents/FirstDeeplearningProject')
 import time
 import numpy as np
 from functions import DataPreparation,PlotImages,CreateModel
@@ -13,8 +12,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 ###Data Path###
 
-categories = ['Morty','Rick']
-data_dir = '/home/machinelearning/Documents/FirstDeepLearningProject/Rick_And_Morty_Dataset/'
+data_dir = '/home/machinelearning/Documents/PokeIA/'
 train = os.path.join(data_dir,'Train')
 validation =  os.path.join(data_dir,'Validation')
 

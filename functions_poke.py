@@ -63,7 +63,7 @@ def CreateModel(img_size):
     model.add(Dropout(0.5))
     model.add(Flatten())
     model.add(Dense(512, activation='relu'))
-    model.add(Dense(2, activation='softmax'))
+    model.add(Dense(10, activation='softmax'))
 
     model.compile(optimizer='adam',
     		loss='sparse_categorical_crossentropy',

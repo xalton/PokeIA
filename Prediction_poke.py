@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 ###Modules###
 import os
-#os.chdir('Documents/FirstDeeplearningProject')
 import numpy as np
 import pandas as pd
 import time
-from functions import PlotImages,DataPreparation
+from functions_poke import PlotImages,DataPreparation
 import tensorflow as tf
 from matplotlib import pyplot as plt
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -15,11 +14,12 @@ print('###################')
 print('###### START ######')
 print('###################')
 start = time.time()
-data_test = '/home/machinelearning/Documents/FirstDeeplearningProject/Rick_And_Morty_Dataset/Test'
+data_test = '/home/machinelearning/Documents/PokeIA/Dataset/Test'
 
-categories = ['Morty','Rick']
+categories = sorted(os.listdir(data_test))
+categories
 img_size = 100
-batch_size = 40
+batch_size = 32
 
 test_data_gen,sample_test_images,categories_test_images = DataPreparation(
         batch_size,
@@ -27,18 +27,19 @@ test_data_gen,sample_test_images,categories_test_images = DataPreparation(
         categories,
         img_size,
         b = False)
-#print(sorted(test_data_gen))
+#print(len(test_data_gen.filenames))
 print('Test:')
+filenames = sorted(test_data_gen.filenames)
+nb_samples = len(filenames)
 PlotImages(sample_test_images,categories_test_images)
 
 ###Prediction###
-model = tf.keras.models.load_model("Rick-Morty-CNN.model")
-pred = model.predict_generator(test_data_gen,steps=len(test_data_gen),verbose=1)
+model = tf.keras.models.load_model("PokeIA-CNN.model/")
+pred = model.predict_generator(test_data_gen,steps=np.ceil(nb_samples/batch_size))
 #test_data_gen.reset()
 predicted_class_indices = np.argmax(pred,axis=1)
 predictions = [categories[k] for k in predicted_class_indices]
-filenames = sorted(test_data_gen.filenames)
-results = pd.DataFrame({"Filenames":filenames,"labels":categories_test_images,"Predictions":predictions})
+results = pd.DataFrame({"Filenames":filenames,"Predictions":predictions})
 
 print(results)
 print('#################')

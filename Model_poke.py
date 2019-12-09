@@ -5,19 +5,23 @@
 import os
 os.getcwd()
 import time
+import shutil
 import numpy as np
-from functions import DataPreparation,PlotImages,CreateModel
+import tensorflow
+from functions_poke import DataPreparation,PlotImages,CreateModel
 from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 ###Data Path###
 
-data_dir = '/home/machinelearning/Documents/PokeIA/'
+data_dir = '/home/machinelearning/Documents/PokeIA/Dataset/'
 train = os.path.join(data_dir,'Train')
 validation =  os.path.join(data_dir,'Validation')
 
+categories = sorted(os.listdir(train))
+categories
 ###Data Preparation###
-batch_size = 20
+batch_size = 32
 img_size = 100
 
 start = time.time()
@@ -42,8 +46,10 @@ PlotImages(sample_val_images,categories_val_images)
 ###Create the model###
 
 model = CreateModel(img_size)
-name = 'Rick-Morty-CNN'
+name = 'PokeIA-CNN'
+#shutil.rmtree("logs/")
 tensorboard = TensorBoard(log_dir="logs/{}".format(name))
+file_writer = tensorflow.summary.create_file_writer('logs/{}'.format(name))
 epochs = 100
 
 ###Train the model###

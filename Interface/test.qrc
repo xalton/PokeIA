@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>images.png</file>
+    <file>poke_background.png</file>
+    <file>pokemon-minimalist-1.png</file>
+  </qresource>
+</RCC>

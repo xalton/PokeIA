@@ -1,5 +1,11 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>dexxx.png</file>
+    <file>dex.png</file>
+    <file>dexx.jpg</file>
+    <file>pokeball.png</file>
+    <file>tensorflow.png</file>
+    <file>images (1).png</file>
     <file>images.png</file>
     <file>poke_background.png</file>
     <file>pokemon-minimalist-1.png</file>

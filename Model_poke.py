@@ -38,10 +38,10 @@ val_data_gen, sample_val_images,categories_val_images = DataPreparation(
 		batch_size,validation,categories,img_size,b=False)
 #show train and val data
 
-print('Train data')
-PlotImages(sample_train_images,categories_train_images)
-print('Validation data')
-PlotImages(sample_val_images,categories_val_images)
+#print('Train data')
+#PlotImages(sample_train_images,categories_train_images)
+#print('Validation data')
+#PlotImages(sample_val_images,categories_val_images)
 
 ###Create the model###
 

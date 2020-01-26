@@ -73,3 +73,6 @@ def CreateModel(img_size):
     		metrics=['accuracy','mean_squared_error'])
     model.summary()
     return model
+
+def sav(name)
+    model.save(name+'.model')

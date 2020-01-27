@@ -9,6 +9,7 @@
 import sys
 import test_rc
 import tensorflow
+import functions_poke
 from PyQt5 import QtCore, QtGui, QtWidgets
 from tensorflow.keras.callbacks import TensorBoard
 
@@ -26,7 +27,7 @@ class Ui_PokeIA(object):
         PokeIA.setMaximumSize(QtCore.QSize(800, 600))
         PokeIA.setAcceptDrops(True)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("pokeball.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("Images/pokeball.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         PokeIA.setWindowIcon(icon)
         self.CentralView = QtWidgets.QWidget(PokeIA)
         self.CentralView.setObjectName("CentralView")
@@ -108,6 +109,7 @@ class Ui_PokeIA(object):
         self.TrainButton = QtWidgets.QPushButton(self.layoutWidget)
         self.TrainButton.setStyleSheet("background-color: rgb(170, 170, 255);")
         self.TrainButton.setObjectName("TrainButton")
+        self.TrainButton.clicked.connect(self.TrainModel)
         self.ActionLayout.addWidget(self.TrainButton, 0, 1, 1, 1)
         self.TestButton = QtWidgets.QPushButton(self.layoutWidget)
         self.TestButton.setStyleSheet("background-color: rgb(170, 170, 255);")
@@ -171,7 +173,10 @@ class Ui_PokeIA(object):
         print("The name of your model is ", name)
         return name
 
-    #def TrainModel(self,name)
+    #def LoadFiles(self):
+
+    def TrainModel(self,name):
+        functions_poke.TrainModel(name)
 
     def retranslateUi(self, PokeIA):
         _translate = QtCore.QCoreApplication.translate

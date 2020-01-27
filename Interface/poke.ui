@@ -33,19 +33,6 @@
     <normaloff>pokeball.png</normaloff>pokeball.png</iconset>
   </property>
   <widget class="QWidget" name="CentralView">
-   <widget class="QwtTextLabel" name="Title">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>10</y>
-      <width>451</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="plainText">
-     <string/>
-    </property>
-   </widget>
    <widget class="QLabel" name="Background">
     <property name="geometry">
      <rect>
@@ -74,22 +61,22 @@
      <string/>
     </property>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget_2">
+   <widget class="QWidget" name="ImagePoke_" native="true">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>150</y>
+      <y>190</y>
       <width>201</width>
       <height>211</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="ImagePoke"/>
    </widget>
-   <widget class="QTableWidget" name="Spec">
+   <widget class="QTableWidget" name="PokeSpec">
     <property name="geometry">
      <rect>
       <x>280</x>
-      <y>150</y>
+      <y>190</y>
       <width>191</width>
       <height>241</height>
      </rect>
@@ -105,8 +92,11 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 25 italic 11pt &quot;Ubuntu&quot;
-rgb(115, 210, 22)</string>
+     <string notr="true">font: 75 15pt &quot;Ubuntu Mono&quot;;
+color: rgb(255, 255, 255);
+border-color: rgb(0, 0, 0);
+background-color: rgb(170, 170, 255);
+</string>
     </property>
     <property name="text">
      <string>Tensorboard</string>
@@ -119,15 +109,18 @@ rgb(115, 210, 22)</string>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>430</y>
+      <x>60</x>
+      <y>450</y>
       <width>321</width>
       <height>161</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="Actions">
+    <layout class="QGridLayout" name="ActionLayout">
      <item row="0" column="1">
       <widget class="QPushButton" name="TrainButton">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(170, 170, 255);</string>
+       </property>
        <property name="text">
         <string>Train</string>
        </property>
@@ -135,6 +128,9 @@ rgb(115, 210, 22)</string>
      </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="TestButton">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(170, 170, 255);</string>
+       </property>
        <property name="text">
         <string>Test</string>
        </property>
@@ -142,6 +138,9 @@ rgb(115, 210, 22)</string>
      </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="pushButton">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(170, 170, 255);</string>
+       </property>
        <property name="text">
         <string>Load</string>
        </property>
@@ -149,6 +148,10 @@ rgb(115, 210, 22)</string>
      </item>
      <item row="1" column="0" colspan="3">
       <widget class="QProgressBar" name="ProgressBar">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(70, 63, 88);
+font: 75 11pt &quot;Ubuntu Mono&quot;;</string>
+       </property>
        <property name="value">
         <number>0</number>
        </property>
@@ -165,11 +168,15 @@ rgb(115, 210, 22)</string>
       <height>91</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="ModelName">
+    <layout class="QHBoxLayout" name="ModelNameLayout">
      <item>
-      <widget class="QwtTextLabel" name="Nameofmodel">
-       <property name="plainText">
-        <string>Name</string>
+      <widget class="QLabel" name="ModelName">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(0, 0, 0);</string>
+       </property>
+       <property name="text">
+        <string>Name:</string>
        </property>
       </widget>
      </item>
@@ -182,6 +189,9 @@ rgb(115, 210, 22)</string>
      </item>
      <item>
       <widget class="QPushButton" name="OKButton">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(170, 170, 255);</string>
+       </property>
        <property name="text">
         <string>OK</string>
        </property>
@@ -189,11 +199,11 @@ rgb(115, 210, 22)</string>
      </item>
     </layout>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="DexScreen">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>40</y>
+      <y>80</y>
       <width>491</width>
       <height>401</height>
      </rect>
@@ -205,24 +215,60 @@ rgb(115, 210, 22)</string>
      <string/>
     </property>
    </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>10</y>
+      <width>591</width>
+      <height>67</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="TitleLayout">
+     <item>
+      <widget class="QLabel" name="Logo1">
+       <property name="styleSheet">
+        <string notr="true">image: url(:/newPrefix/pokeball.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="Title">
+       <property name="styleSheet">
+        <string notr="true">font: 75 48pt &quot;Ubuntu Mono&quot;;
+color: rgb(255, 255, 255);
+border-color: rgb(0, 0, 0);</string>
+       </property>
+       <property name="text">
+        <string>Poke IA app</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="Logo2">
+       <property name="styleSheet">
+        <string notr="true">image: url(:/newPrefix/pokeball.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
    <zorder>Background</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>Title</zorder>
-   <zorder>gridLayoutWidget_2</zorder>
+   <zorder>layoutWidget</zorder>
    <zorder>TensorboardButton</zorder>
-   <zorder>label</zorder>
-   <zorder>Spec</zorder>
+   <zorder>DexScreen</zorder>
+   <zorder>PokeSpec</zorder>
+   <zorder>ImagePoke_</zorder>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QwtTextLabel</class>
-   <extends>QFrame</extends>
-   <header>qwt_text_label.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="test.qrc"/>
  </resources>

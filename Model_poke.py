@@ -3,9 +3,8 @@
 ###Modules###
 
 import os
-os.getcwd()
+#os.getcwd()
 import time
-import shutil
 import numpy as np
 import tensorflow
 from functions_poke import DataPreparation,PlotImages,CreateModel

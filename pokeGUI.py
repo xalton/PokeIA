@@ -118,6 +118,7 @@ class Ui_PokeIA(object):
         self.pushButton = QtWidgets.QPushButton(self.layoutWidget)
         self.pushButton.setStyleSheet("background-color: rgb(170, 170, 255);")
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(self.LoadImage)
         self.ActionLayout.addWidget(self.pushButton, 0, 0, 1, 1)
         self.ProgressBar = QtWidgets.QProgressBar(self.layoutWidget)
         self.ProgressBar.setStyleSheet("background-color: rgb(70, 63, 88);\n"
@@ -173,7 +174,11 @@ class Ui_PokeIA(object):
         print("The name of your model is ", name)
         return name
 
-    #def LoadFiles(self):
+    def LoadImage(self):
+        l = QtWidgets.QFileDialog.getOpenFileName(None,'Open File',r"/home/machinelearning/Documents/PokeIA/Dataset")
+        image_path = l[0]
+        print('Your image is loaded:', image_path)
+        return image_path
 
     def TrainModel(self,name):
         functions_poke.TrainModel(name)
@@ -184,7 +189,7 @@ class Ui_PokeIA(object):
         self.TensorboardButton.setText(_translate("PokeIA", "Tensorboard"))
         self.TrainButton.setText(_translate("PokeIA", "Train"))
         self.TestButton.setText(_translate("PokeIA", "Test"))
-        self.pushButton.setText(_translate("PokeIA", "Load"))
+        self.pushButton.setText(_translate("PokeIA", "Browse"))
         self.ModelName.setText(_translate("PokeIA", "Name:"))
         self.OKButton.setText(_translate("PokeIA", "OK"))
         self.Title.setText(_translate("PokeIA", "Poke IA app"))

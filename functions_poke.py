@@ -126,3 +126,5 @@ def TrainModel(name):
     print('#################')
     print('')
     print("- t_read = %s s -" % (time.time() - start))
+    Flag = True
+    return Flag

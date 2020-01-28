@@ -5,16 +5,19 @@
 # Design created with: PyQt5 UI code generator 5.13.0
 #
 
-
 import sys
+import time
 import test_rc
 import tensorflow
 import functions_poke
+from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5 import QtCore, QtGui, QtWidgets
 from tensorflow.keras.callbacks import TensorBoard
 
 
 class Ui_PokeIA(object):
+    def __init__(self):
+        self.name = "vide"
     def setupUi(self, PokeIA):
 
         ########################
@@ -109,7 +112,7 @@ class Ui_PokeIA(object):
         self.TrainButton = QtWidgets.QPushButton(self.layoutWidget)
         self.TrainButton.setStyleSheet("background-color: rgb(170, 170, 255);")
         self.TrainButton.setObjectName("TrainButton")
-        self.TrainButton.clicked.connect(self.TrainModel)
+        self.TrainButton.clicked.connect(self.TrainButtonClick)
         self.ActionLayout.addWidget(self.TrainButton, 0, 1, 1, 1)
         self.TestButton = QtWidgets.QPushButton(self.layoutWidget)
         self.TestButton.setStyleSheet("background-color: rgb(170, 170, 255);")
@@ -152,6 +155,9 @@ class Ui_PokeIA(object):
         self.OKButton.clicked.connect(self.GetModelName)
         self.ModelNameLayout.addWidget(self.OKButton)
 
+        ##################
+        ## RAISE FORMS  ##
+        ##################
 
         self.Background.raise_()
         self.layoutWidget.raise_()
@@ -168,11 +174,11 @@ class Ui_PokeIA(object):
         QtCore.QMetaObject.connectSlotsByName(PokeIA)
 
     def GetModelName(self):
-        name = self.InputName.text()
-        tensorboard = TensorBoard(log_dir="logs/{}".format(name))
-        file_writer = tensorflow.summary.create_file_writer('logs/{}'.format(name))
-        print("The name of your model is ", name)
-        return name
+        self.name = self.InputName.text()
+        tensorboard = TensorBoard(log_dir="logs/{}".format(self.name))
+        file_writer = tensorflow.summary.create_file_writer('logs/{}'.format(self.name))
+        print("The name of your model is ", self.name)
+        return self.name
 
     def LoadImage(self):
         l = QtWidgets.QFileDialog.getOpenFileName(None,'Open File',r"/home/machinelearning/Documents/PokeIA/Dataset")
@@ -180,8 +186,13 @@ class Ui_PokeIA(object):
         print('Your image is loaded:', image_path)
         return image_path
 
-    def TrainModel(self,name):
-        functions_poke.TrainModel(name)
+    def TrainButtonClick(self):
+        self.calc = External()
+        self.calc.countChanged.connect(self.onCountChanged)
+        self.calc.start()
+
+    def onCountChanged(self,value):
+        self.ProgressBar.setValue(value)
 
     def retranslateUi(self, PokeIA):
         _translate = QtCore.QCoreApplication.translate
@@ -195,9 +206,25 @@ class Ui_PokeIA(object):
         self.Title.setText(_translate("PokeIA", "Poke IA app"))
 
 
+TIME_LIMIT = 100
+class External(QThread,Ui_PokeIA):
+    """
+    Runs a counter thread.
+    """
+    countChanged = pyqtSignal(int)
+
+    def run(self,Ui_PokeIA.name):
+        count = 0
+        flag = False
+        while count < TIME_LIMIT and flag == False:
+            count += 1
+            time.sleep(1)
+            flag = functions_poke.TrainModel(Ui_PokeIA.name)
+            self.countChanged.emit(count)
+
+
 
 if __name__ == "__main__":
-
     app = QtWidgets.QApplication(sys.argv)
     PokeIA = QtWidgets.QMainWindow()
     ui = Ui_PokeIA()

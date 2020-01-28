@@ -213,14 +213,20 @@ class External(QThread,Ui_PokeIA):
     """
     countChanged = pyqtSignal(int)
 
-    def run(self,Ui_PokeIA.name):
+    def run(self):
         count = 0
         flag = False
         while count < TIME_LIMIT and flag == False:
             count += 1
             time.sleep(1)
-            flag = functions_poke.TrainModel(Ui_PokeIA.name)
             self.countChanged.emit(count)
+            #--> Problème avec cette logique
+            #Passe de 1% à 100% directement et n'incrémente pas
+            #pendant que TrainModel s'execute.
+            #--> Solution? jouer sur le temps d'execution du TrainModel pour
+            #update la progress bar
+            flag = functions_poke.TrainModel(self.name)
+
 
 
 

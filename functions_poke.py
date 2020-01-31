@@ -144,11 +144,9 @@ def Predic(image_path,name):
     categ
     path = image_path.split("/")
     for label in categ:
-        print(label)
         if label in image_path:
-            print('Success!!')
             poke = label
-            print(poke)
+            print('Oh you see ' + poke)
 
     img_size = 100
     batch_size = 1
@@ -175,9 +173,11 @@ def Predic(image_path,name):
     predicted_class_indices = np.argmax(predicted,axis=1)
     print(predicted_class_indices)
     pred = categ[predicted_class_indices[0]]
-    print(pred)
+    if pred == poke:
+        print('Success!')
+        print(pred)
 
-    return predicted_class_indices
+    return pred
     #results = pd.DataFrame({"Filenames":filenames,"Predictions":predictions})
 
     #print(results)

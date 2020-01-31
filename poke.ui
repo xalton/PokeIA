@@ -55,7 +55,7 @@
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-image: url(:/newPrefix/poke_background.png);</string>
+     <string notr="true">background-image: url(:/newPrefix/Images/poke_background.png);</string>
     </property>
     <property name="text">
      <string/>
@@ -102,7 +102,7 @@ background-color: rgb(170, 170, 255);
      <string>Tensorboard</string>
     </property>
     <property name="icon">
-     <iconset resource="test.qrc">
+     <iconset>
       <normaloff>:/newPrefix/tensorflow.png</normaloff>:/newPrefix/tensorflow.png</iconset>
     </property>
    </widget>

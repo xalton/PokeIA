@@ -59,9 +59,9 @@ class Ui_PokeIA(object):
         self.Logo1.setObjectName("Logo1")
         self.TitleLayout.addWidget(self.Logo1)
         self.Title = QtWidgets.QLabel(self.layoutWidget2)
-        self.Title.setStyleSheet("font: 75 48pt \"Ubuntu Mono\";\n"
-"color: rgb(255, 255, 255);\n"
-"border-color: rgb(0, 0, 0);")
+        self.Title.setStyleSheet("font: 75 48pt \"Ubuntu Mnono\";\n"
+        "color: rgb(255, 255, 255);\n"
+        "border-color: rgb(0, 0, 0);")
         self.Title.setObjectName("Title")
         self.TitleLayout.addWidget(self.Title)
         self.Logo2 = QtWidgets.QLabel(self.layoutWidget2)
@@ -75,7 +75,8 @@ class Ui_PokeIA(object):
         self.ImagePoke_.setGeometry(QtCore.QRect(20, 190, 201, 211))
         self.ImagePoke_.setObjectName("ImagePoke_")
         self.ImagePoke = QtWidgets.QGridLayout(self.ImagePoke_)
-        self.ImagePoke.setContentsMargins(0, 0, 0, 0)
+        self.ImagePoke.setContentsMargins(0, 0, 0, 0)")
+        self.TitleLayout.addWidget(self.Lo
         self.ImagePoke.setObjectName("ImagePoke")
 
         ###### SPEC POKE ######

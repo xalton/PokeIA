@@ -1,11 +1,13 @@
 import os
+import re
 import time
+import pandas as pd
 import numpy as np
 import tensorflow
 from matplotlib import pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
 
 def DataPreparation(batch_size,path,categories,img_size,b):
@@ -75,9 +77,10 @@ def CreateModel(img_size):
 
     model.compile(optimizer='adam',
     		loss='sparse_categorical_crossentropy',
-    		metrics=['accuracy','mean_squared_error'])
+    		metrics=['accuracy'])
     model.summary()
     return model
+
 
 def sav(name):
     model.save(name+'.model')
@@ -110,6 +113,7 @@ def TrainModel(name):
     tensorboard = TensorBoard(log_dir="logs/{}".format(name))
     file_writer = tensorflow.summary.create_file_writer('logs/{}'.format(name))
     epochs = 100
+
     ###Train the model###
     hist = model.fit_generator(
     	train_data_gen ,
@@ -117,8 +121,10 @@ def TrainModel(name):
     	epochs=epochs,
     	validation_data=val_data_gen,
     	validation_steps=int(np.ceil(val_data_gen.n)  / float(batch_size)),
-    	callbacks=[tensorboard]
+    	callbacks=[tensorboard],
+        verbose = 1,
     )
+
     ###Save the model###
     model.save(name+'.model')
     print('#################')
@@ -126,5 +132,57 @@ def TrainModel(name):
     print('#################')
     print('')
     print("- t_read = %s s -" % (time.time() - start))
-    Flag = True
-    return Flag
+
+def Predic(image_path,name):
+    ###Data preparation###
+    print('###################')
+    print('###### START ######')
+    print('###################')
+    start = time.time()
+    path_test = '/home/machinelearning/Documents/PokeIA/Dataset/Test'
+    categ = sorted(os.listdir(path_test))
+    categ
+    path = image_path.split("/")
+    for label in categ:
+        print(label)
+        if label in image_path:
+            print('Success!!')
+            poke = label
+            print(poke)
+
+    img_size = 100
+    batch_size = 1
+    img = load_img(image_path, target_size = (img_size, img_size))
+    img = img_to_array(img)
+    img = np.expand_dims(img, axis = 0)
+
+    #test_data_gen,sample_test_images,categories_test_images = DataPreparation(
+    #        batch_size,
+    #        image_path,
+    #        poke,
+    #        img_size,
+    #        b = False)
+    #print(len(test_data_gen.filenames))
+    print('Test:')
+    #filenames = sorted(test_data_gen.filenames)
+    #nb_samples = len(filenames)
+
+    ###Prediction###
+    model = tensorflow.keras.models.load_model(name+".model/")
+    #pred = model.predict_generator(test_data_gen,steps=np.ceil(nb_samples/batch_size))
+    #test_data_gen.reset()
+    predicted = model.predict(img)
+    predicted_class_indices = np.argmax(predicted,axis=1)
+    print(predicted_class_indices)
+    pred = categ[predicted_class_indices[0]]
+    print(pred)
+
+    return predicted_class_indices
+    #results = pd.DataFrame({"Filenames":filenames,"Predictions":predictions})
+
+    #print(results)
+    print('#################')
+    print('#####  DONE #####')
+    print('')
+    print('#################')
+    print("- t_read = %s s -" % (time.time() - start))

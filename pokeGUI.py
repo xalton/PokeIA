@@ -5,6 +5,7 @@
 # Design created with: PyQt5 UI code generator 5.13.0
 #
 
+import re
 import sys
 import time
 import test_rc
@@ -117,6 +118,7 @@ class Ui_PokeIA(object):
         self.TestButton = QtWidgets.QPushButton(self.layoutWidget)
         self.TestButton.setStyleSheet("background-color: rgb(170, 170, 255);")
         self.TestButton.setObjectName("TestButton")
+        self.TestButton.clicked.connect(self.TestButtonClick)
         self.ActionLayout.addWidget(self.TestButton, 0, 2, 1, 1)
         self.pushButton = QtWidgets.QPushButton(self.layoutWidget)
         self.pushButton.setStyleSheet("background-color: rgb(170, 170, 255);")
@@ -175,21 +177,29 @@ class Ui_PokeIA(object):
 
     def GetModelName(self):
         self.name = self.InputName.text()
-        tensorboard = TensorBoard(log_dir="logs/{}".format(self.name))
-        file_writer = tensorflow.summary.create_file_writer('logs/{}'.format(self.name))
         print("The name of your model is ", self.name)
         return self.name
 
     def LoadImage(self):
         l = QtWidgets.QFileDialog.getOpenFileName(None,'Open File',r"/home/machinelearning/Documents/PokeIA/Dataset")
-        image_path = l[0]
-        print('Your image is loaded:', image_path)
-        return image_path
+        self.image_path = l[0]
+        print('Your image is loaded:', self.image_path)
+        return self.image_path
 
     def TrainButtonClick(self):
-        self.calc = External()
-        self.calc.countChanged.connect(self.onCountChanged)
-        self.calc.start()
+        functions_poke.TrainModel(self.name)
+        #self.calc = External()
+        #self.calc.start()
+        #p1 = Process(target=functions_poke.TrainModel(self.name))
+        #p1.start()
+        #p2 = Process(target=self.calc.countChanged.connect(self.onCountChanged))
+        #p2.start()
+        #p1.join()
+        #p2.join()
+
+    def TestButtonClick(self):
+         self.label = functions_poke.Predic(self.image_path,self.name)
+         print("Your image is :", self.label)
 
     def onCountChanged(self,value):
         self.ProgressBar.setValue(value)
@@ -207,7 +217,7 @@ class Ui_PokeIA(object):
 
 
 TIME_LIMIT = 100
-class External(QThread,Ui_PokeIA):
+class External(QThread):#,Ui_PokeIA):
     """
     Runs a counter thread.
     """
@@ -215,19 +225,15 @@ class External(QThread,Ui_PokeIA):
 
     def run(self):
         count = 0
-        flag = False
-        while count < TIME_LIMIT and flag == False:
+        while count < TIME_LIMIT:
             count += 1
-            time.sleep(1)
+            #time.sleep(1)
             self.countChanged.emit(count)
             #--> Problème avec cette logique
             #Passe de 1% à 100% directement et n'incrémente pas
             #pendant que TrainModel s'execute.
             #--> Solution? jouer sur le temps d'execution du TrainModel pour
             #update la progress bar
-            flag = functions_poke.TrainModel(self.name)
-
-
 
 
 if __name__ == "__main__":

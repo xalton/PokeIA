@@ -16,6 +16,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from tensorflow.keras.callbacks import TensorBoard
 
 
+
 class Ui_PokeIA(object):
 
     def __init__(self):
@@ -109,27 +110,37 @@ class Ui_PokeIA(object):
         self.ActionLayout = QtWidgets.QGridLayout(self.layoutWidget)
         self.ActionLayout.setContentsMargins(0, 0, 0, 0)
         self.ActionLayout.setObjectName("ActionLayout")
+
+        self.status = QtWidgets.QLabel(self.CentralView)
+        self.status.setGeometry(QtCore.QRect(200, 570, 321, 20))
+        self.status.setObjectName("status")
+        self.status.setText("")
+
         self.TrainButton = QtWidgets.QPushButton(self.layoutWidget)
         self.TrainButton.setStyleSheet("background-color: rgb(170, 170, 255);")
         self.TrainButton.setObjectName("TrainButton")
         self.TrainButton.clicked.connect(self.TrainButtonClick)
         self.ActionLayout.addWidget(self.TrainButton, 0, 1, 1, 1)
+
         self.TestButton = QtWidgets.QPushButton(self.layoutWidget)
         self.TestButton.setStyleSheet("background-color: rgb(170, 170, 255);")
         self.TestButton.setObjectName("TestButton")
         self.TestButton.clicked.connect(self.TestButtonClick)
         self.ActionLayout.addWidget(self.TestButton, 0, 2, 1, 1)
+
         self.pushButton = QtWidgets.QPushButton(self.layoutWidget)
         self.pushButton.setStyleSheet("background-color: rgb(170, 170, 255);")
         self.pushButton.setObjectName("pushButton")
         self.pushButton.clicked.connect(self.LoadImage)
         self.ActionLayout.addWidget(self.pushButton, 0, 0, 1, 1)
-        self.ProgressBar = QtWidgets.QProgressBar(self.layoutWidget)
-        self.ProgressBar.setStyleSheet("background-color: rgb(70, 63, 88);\n"
-        "font: 75 11pt \"Ubuntu Mono\";")
-        self.ProgressBar.setProperty("value", 0)
-        self.ProgressBar.setObjectName("ProgressBar")
-        self.ActionLayout.addWidget(self.ProgressBar, 1, 0, 1, 3)
+
+        #self.ProgressBar = QtWidgets.QProgressBar(self.layoutWidget)
+        #self.ProgressBar.setStyleSheet("background-color: rgb(70, 63, 88);\n"
+        #"font: 75 11pt \"Ubuntu Mono\";")
+        #self.ProgressBar.setProperty("value", 0)
+        #self.ProgressBar.setObjectName("ProgressBar")
+        #self.ActionLayout.addWidget(self.ProgressBar, 1, 0, 1, 3)
+
 
         ########################
         ## MODEL NAME LAYOUT  ##
@@ -165,6 +176,7 @@ class Ui_PokeIA(object):
         self.layoutWidget1.raise_()
         self.layoutWidget2.raise_()
         self.TensorboardButton.raise_()
+        self.status.raise_()
         self.DexScreen.raise_()
         self.PokeSpec.raise_()
         self.ImagePoke.raise_()
@@ -188,15 +200,9 @@ class Ui_PokeIA(object):
         return self.image_path
 
     def TrainButtonClick(self):
+        self.status.setText("Running...")
         functions_poke.TrainModel(self.name)
-        #self.calc = External()
-        #self.calc.start()
-        #p1 = Process(target=functions_poke.TrainModel(self.name))
-        #p1.start()
-        #p2 = Process(target=self.calc.countChanged.connect(self.onCountChanged))
-        #p2.start()
-        #p1.join()
-        #p2.join()
+        self.status.setText("Done")
 
     def TestButtonClick(self):
          self.label,self.flag = functions_poke.Predic(self.image_path,self.name)
@@ -205,8 +211,6 @@ class Ui_PokeIA(object):
              path_spec = 'Images/Spec/spec_'+ self.label +'.png'
              self.PokeSpec.setPixmap(QtGui.QPixmap(path_spec))
 
-    def onCountChanged(self,value):
-        self.ProgressBar.setValue(value)
 
     def retranslateUi(self, PokeIA):
         _translate = QtCore.QCoreApplication.translate
@@ -219,25 +223,6 @@ class Ui_PokeIA(object):
         self.OKButton.setText(_translate("PokeIA", "OK"))
         self.Title.setText(_translate("PokeIA", "Poke IA app"))
 
-
-TIME_LIMIT = 100
-class External(QThread):#,Ui_PokeIA):
-    """
-    Runs a counter thread.
-    """
-    countChanged = pyqtSignal(int)
-
-    def run(self):
-        count = 0
-        while count < TIME_LIMIT:
-            count += 1
-            #time.sleep(1)
-            self.countChanged.emit(count)
-            #--> Problème avec cette logique
-            #Passe de 1% à 100% directement et n'incrémente pas
-            #pendant que TrainModel s'execute.
-            #--> Solution? jouer sur le temps d'execution du TrainModel pour
-            #update la progress bar
 
 
 if __name__ == "__main__":

@@ -81,10 +81,10 @@ class Ui_PokeIA(object):
 
         ###### SPEC POKE ######
 
-        #self.PokeSpec = QtWidgets.QLabel(self.CentralView)
-        #self.PokeSpec.setGeometry(QtCore.QRect(280, 190, 191, 241))
-        #self.PokeSpec.setObjectName("PokeSpec")
-
+        self.PokeSpec = QtWidgets.QLabel(self.CentralView)
+        self.PokeSpec.setGeometry(QtCore.QRect(280, 190, 191, 241))
+        self.PokeSpec.setObjectName("PokeSpec")
+        self.PokeSpec.setStyleSheet("Background-color: rgb(255,255,255);")
         ###### LINK Tensorboard ######
 
         self.TensorboardButton = QtWidgets.QCommandLinkButton(self.CentralView)
@@ -166,7 +166,7 @@ class Ui_PokeIA(object):
         self.layoutWidget2.raise_()
         self.TensorboardButton.raise_()
         self.DexScreen.raise_()
-        #self.PokeSpec.raise_()
+        self.PokeSpec.raise_()
         self.ImagePoke_.raise_()
         PokeIA.setCentralWidget(self.CentralView)
 
@@ -200,13 +200,8 @@ class Ui_PokeIA(object):
          self.label,self.flag = functions_poke.Predic(self.image_path,self.name)
          print("Your image is :", self.label)
          if self.flag == True:
-             path_spec = 'Images/Spec/spec_'+ self.name +'.png'
-             im_spec = QtGui.QPixmap(path_spec)
-             self.PokeSpec = QtWidgets.QLabel(self.CentralView)
-             self.PokeSpec.setGeometry(QtCore.QRect(280, 190, 191, 241))
-             self.PokeSpec.setObjectName("PokeSpec")
-             self.PokeSpec.setPixmap(im_spec)
-             self.PokeSpec.raise_()
+             path_spec = 'Images/Spec/spec_'+ self.label +'.png'
+             self.PokeSpec.setPixmap(QtGui.QPixmap(path_spec))
 
     def onCountChanged(self,value):
         self.ProgressBar.setValue(value)

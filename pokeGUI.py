@@ -17,8 +17,11 @@ from tensorflow.keras.callbacks import TensorBoard
 
 
 class Ui_PokeIA(object):
+
     def __init__(self):
         self.name = "vide"
+        self.setupUi(PokeIA)
+
     def setupUi(self, PokeIA):
 
         ########################
@@ -40,12 +43,10 @@ class Ui_PokeIA(object):
         self.Background.setMinimumSize(QtCore.QSize(800, 600))
         self.Background.setMaximumSize(QtCore.QSize(800, 600))
         self.Background.setStyleSheet("background-image: url(:/newPrefix/poke_background.png);")
-        self.Background.setText("")
         self.Background.setObjectName("Background")
         self.DexScreen = QtWidgets.QLabel(self.CentralView)
         self.DexScreen.setGeometry(QtCore.QRect(0, 80, 491, 401))
         self.DexScreen.setStyleSheet("image: url(:/newPrefix/dexxx.png);")
-        self.DexScreen.setText("")
         self.DexScreen.setObjectName("DexScreen")
         self.layoutWidget2 = QtWidgets.QWidget(self.CentralView)
         self.layoutWidget2.setGeometry(QtCore.QRect(100, 10, 591, 67))
@@ -66,7 +67,6 @@ class Ui_PokeIA(object):
         self.TitleLayout.addWidget(self.Title)
         self.Logo2 = QtWidgets.QLabel(self.layoutWidget2)
         self.Logo2.setStyleSheet("image: url(:/newPrefix/pokeball.png);")
-        self.Logo2.setText("")
         self.Logo2.setObjectName("Logo2")
         self.TitleLayout.addWidget(self.Logo2)
         ###### IMAGE POKE ######
@@ -75,27 +75,25 @@ class Ui_PokeIA(object):
         self.ImagePoke_.setGeometry(QtCore.QRect(20, 190, 201, 211))
         self.ImagePoke_.setObjectName("ImagePoke_")
         self.ImagePoke = QtWidgets.QGridLayout(self.ImagePoke_)
-        self.ImagePoke.setContentsMargins(0, 0, 0, 0)")
-        self.TitleLayout.addWidget(self.Lo
+        self.ImagePoke.setContentsMargins(0, 0, 0, 0)
+        self.TitleLayout.addWidget(self.Logo2)
         self.ImagePoke.setObjectName("ImagePoke")
 
         ###### SPEC POKE ######
 
-        self.PokeSpec = QtWidgets.QTableWidget(self.CentralView)
-        self.PokeSpec.setGeometry(QtCore.QRect(280, 190, 191, 241))
-        self.PokeSpec.setObjectName("PokeSpec")
-        self.PokeSpec.setColumnCount(0)
-        self.PokeSpec.setRowCount(0)
+        #self.PokeSpec = QtWidgets.QLabel(self.CentralView)
+        #self.PokeSpec.setGeometry(QtCore.QRect(280, 190, 191, 241))
+        #self.PokeSpec.setObjectName("PokeSpec")
 
         ###### LINK Tensorboard ######
 
         self.TensorboardButton = QtWidgets.QCommandLinkButton(self.CentralView)
         self.TensorboardButton.setGeometry(QtCore.QRect(610, 540, 177, 41))
         self.TensorboardButton.setStyleSheet("font: 75 15pt \"Ubuntu Mono\";\n"
-"color: rgb(255, 255, 255);\n"
-"border-color: rgb(0, 0, 0);\n"
-"background-color: rgb(170, 170, 255);\n"
-"")
+        "color: rgb(255, 255, 255);\n"
+        "border-color: rgb(0, 0, 0);\n"
+        "background-color: rgb(170, 170, 255);\n"
+        "")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/newPrefix/tensorflow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.TensorboardButton.setIcon(icon1)
@@ -128,7 +126,7 @@ class Ui_PokeIA(object):
         self.ActionLayout.addWidget(self.pushButton, 0, 0, 1, 1)
         self.ProgressBar = QtWidgets.QProgressBar(self.layoutWidget)
         self.ProgressBar.setStyleSheet("background-color: rgb(70, 63, 88);\n"
-"font: 75 11pt \"Ubuntu Mono\";")
+        "font: 75 11pt \"Ubuntu Mono\";")
         self.ProgressBar.setProperty("value", 0)
         self.ProgressBar.setObjectName("ProgressBar")
         self.ActionLayout.addWidget(self.ProgressBar, 1, 0, 1, 3)
@@ -145,7 +143,7 @@ class Ui_PokeIA(object):
         self.ModelNameLayout.setObjectName("ModelNameLayout")
         self.ModelName = QtWidgets.QLabel(self.layoutWidget1)
         self.ModelName.setStyleSheet("color: rgb(255, 255, 255);\n"
-"border-color: rgb(0, 0, 0);")
+        "border-color: rgb(0, 0, 0);")
         self.ModelName.setObjectName("ModelName")
         self.ModelNameLayout.addWidget(self.ModelName)
         self.InputName = QtWidgets.QLineEdit(self.layoutWidget1)
@@ -168,7 +166,7 @@ class Ui_PokeIA(object):
         self.layoutWidget2.raise_()
         self.TensorboardButton.raise_()
         self.DexScreen.raise_()
-        self.PokeSpec.raise_()
+        #self.PokeSpec.raise_()
         self.ImagePoke_.raise_()
         PokeIA.setCentralWidget(self.CentralView)
 
@@ -199,8 +197,16 @@ class Ui_PokeIA(object):
         #p2.join()
 
     def TestButtonClick(self):
-         self.label = functions_poke.Predic(self.image_path,self.name)
+         self.label,self.flag = functions_poke.Predic(self.image_path,self.name)
          print("Your image is :", self.label)
+         if self.flag == True:
+             path_spec = 'Images/Spec/spec_'+ self.name +'.png'
+             im_spec = QtGui.QPixmap(path_spec)
+             self.PokeSpec = QtWidgets.QLabel(self.CentralView)
+             self.PokeSpec.setGeometry(QtCore.QRect(280, 190, 191, 241))
+             self.PokeSpec.setObjectName("PokeSpec")
+             self.PokeSpec.setPixmap(im_spec)
+             self.PokeSpec.raise_()
 
     def onCountChanged(self,value):
         self.ProgressBar.setValue(value)

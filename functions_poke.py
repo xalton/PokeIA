@@ -141,7 +141,7 @@ def Predic(image_path,name):
     start = time.time()
     path_test = '/home/machinelearning/Documents/PokeIA/Dataset/Test'
     categ = sorted(os.listdir(path_test))
-    categ
+    #categ
     path = image_path.split("/")
     for label in categ:
         if label in image_path:
@@ -169,6 +169,7 @@ def Predic(image_path,name):
     model = tensorflow.keras.models.load_model(name+".model/")
     #pred = model.predict_generator(test_data_gen,steps=np.ceil(nb_samples/batch_size))
     #test_data_gen.reset()
+    flag = False
     predicted = model.predict(img)
     predicted_class_indices = np.argmax(predicted,axis=1)
     print(predicted_class_indices)
@@ -176,8 +177,12 @@ def Predic(image_path,name):
     if pred == poke:
         print('Success!')
         print(pred)
+        flag = True
+    else:
+        print('Oh no!')
+        print(pred)
 
-    return pred
+    return pred,flag
     #results = pd.DataFrame({"Filenames":filenames,"Predictions":predictions})
 
     #print(results)

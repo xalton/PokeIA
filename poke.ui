@@ -72,16 +72,6 @@
     </property>
     <layout class="QGridLayout" name="ImagePoke"/>
    </widget>
-   <widget class="QTableWidget" name="PokeSpec">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>190</y>
-      <width>191</width>
-      <height>241</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QCommandLinkButton" name="TensorboardButton">
     <property name="geometry">
      <rect>
@@ -259,14 +249,33 @@ border-color: rgb(0, 0, 0);</string>
      </item>
     </layout>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>286</x>
+      <y>196</y>
+      <width>181</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>Images/Spec/spec_ouistempo.png</pixmap>
+    </property>
+   </widget>
    <zorder>Background</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>TensorboardButton</zorder>
    <zorder>DexScreen</zorder>
-   <zorder>PokeSpec</zorder>
    <zorder>ImagePoke_</zorder>
+   <zorder>label</zorder>
   </widget>
  </widget>
  <resources>

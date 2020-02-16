@@ -71,12 +71,12 @@ class Ui_PokeIA(object):
         self.TitleLayout.addWidget(self.Logo2)
         ###### IMAGE POKE ######
 
-        self.ImagePoke_ = QtWidgets.QWidget(self.CentralView)
-        self.ImagePoke_.setGeometry(QtCore.QRect(20, 190, 201, 211))
-        self.ImagePoke_.setObjectName("ImagePoke_")
-        self.ImagePoke = QtWidgets.QGridLayout(self.ImagePoke_)
-        self.ImagePoke.setContentsMargins(0, 0, 0, 0)
-        self.TitleLayout.addWidget(self.Logo2)
+        self.ImagePoke = QtWidgets.QLabel(self.CentralView)
+        self.ImagePoke.setGeometry(QtCore.QRect(11, 185, 213, 213))
+        self.ImagePoke.setObjectName("ImagePoke_")
+        self.ImagePoke.setContentsMargins(4, 4, 1, 1)
+        self.ImagePoke.setScaledContents(True)
+        #self.TitleLayout.addWidget(self.Logo2)
         self.ImagePoke.setObjectName("ImagePoke")
 
         ###### SPEC POKE ######
@@ -167,7 +167,7 @@ class Ui_PokeIA(object):
         self.TensorboardButton.raise_()
         self.DexScreen.raise_()
         self.PokeSpec.raise_()
-        self.ImagePoke_.raise_()
+        self.ImagePoke.raise_()
         PokeIA.setCentralWidget(self.CentralView)
 
 
@@ -183,6 +183,8 @@ class Ui_PokeIA(object):
         l = QtWidgets.QFileDialog.getOpenFileName(None,'Open File',r"/home/machinelearning/Documents/PokeIA/Dataset")
         self.image_path = l[0]
         print('Your image is loaded:', self.image_path)
+        self.ImagePoke.setPixmap(QtGui.QPixmap(self.image_path))
+
         return self.image_path
 
     def TrainButtonClick(self):

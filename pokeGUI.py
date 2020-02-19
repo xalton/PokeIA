@@ -11,6 +11,7 @@ import time
 import test_rc
 import tensorflow
 import functions_poke
+from subprocess import Popen, PIPE
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5 import QtCore, QtGui, QtWidgets
 from tensorflow.keras.callbacks import TensorBoard
@@ -86,6 +87,7 @@ class Ui_PokeIA(object):
         self.PokeSpec.setGeometry(QtCore.QRect(280, 190, 191, 241))
         self.PokeSpec.setObjectName("PokeSpec")
         self.PokeSpec.setStyleSheet("Background-color: rgb(255,255,255);")
+
         ###### LINK Tensorboard ######
 
         self.TensorboardButton = QtWidgets.QCommandLinkButton(self.CentralView)
@@ -99,6 +101,8 @@ class Ui_PokeIA(object):
         icon1.addPixmap(QtGui.QPixmap(":/newPrefix/tensorflow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.TensorboardButton.setIcon(icon1)
         self.TensorboardButton.setObjectName("TensorboardButton")
+        self.TensorboardButton.clicked.connect(self.TensorboardButtonClick)
+
 
         ########################
         #### ACTION LAYOUT  ####
@@ -201,6 +205,7 @@ class Ui_PokeIA(object):
 
     def TrainButtonClick(self):
         self.status.setText("Running...")
+        self.status.repaint()
         functions_poke.TrainModel(self.name)
         self.status.setText("Done")
 
@@ -210,6 +215,12 @@ class Ui_PokeIA(object):
          if self.flag == True:
              path_spec = 'Images/Spec/spec_'+ self.label +'.png'
              self.PokeSpec.setPixmap(QtGui.QPixmap(path_spec))
+
+    def TensorboardButtonClick(self):
+        pipe = Popen("tensorboard --logdir logs/Poke-CNN", shell=True, stdout=PIPE).stdout
+        output = pipe.read()
+        print(output)
+
 
 
     def retranslateUi(self, PokeIA):
@@ -222,6 +233,7 @@ class Ui_PokeIA(object):
         self.ModelName.setText(_translate("PokeIA", "Name:"))
         self.OKButton.setText(_translate("PokeIA", "OK"))
         self.Title.setText(_translate("PokeIA", "Poke IA app"))
+
 
 
 

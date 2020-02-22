@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>Images/Spec/Spec_Charbi.png</file>
     <file>Images/Spec/spec_ouistempo.png</file>
     <file>test_ouistempo.png</file>
     <file>dexxx.png</file>

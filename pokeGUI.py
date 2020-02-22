@@ -11,8 +11,9 @@ import time
 import test_rc
 import tensorflow
 import functions_poke
+import webbrowser
 from subprocess import Popen, PIPE
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtCore import QThreadPool,QRunnable, pyqtSignal, pyqtSlot
 from PyQt5 import QtCore, QtGui, QtWidgets
 from tensorflow.keras.callbacks import TensorBoard
 
@@ -23,7 +24,8 @@ class Ui_PokeIA(object):
     def __init__(self):
         self.name = "vide"
         self.setupUi(PokeIA)
-
+        self.threadpool = QThreadPool()
+        print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
     def setupUi(self, PokeIA):
 
         ########################
@@ -44,11 +46,11 @@ class Ui_PokeIA(object):
         self.Background.setGeometry(QtCore.QRect(0, 0, 800, 600))
         self.Background.setMinimumSize(QtCore.QSize(800, 600))
         self.Background.setMaximumSize(QtCore.QSize(800, 600))
-        self.Background.setStyleSheet("background-image: url(:/newPrefix/poke_background.png);")
+        self.Background.setStyleSheet("background-image: url(:/newPrefix/Images/poke_background.png);")
         self.Background.setObjectName("Background")
         self.DexScreen = QtWidgets.QLabel(self.CentralView)
         self.DexScreen.setGeometry(QtCore.QRect(0, 80, 491, 401))
-        self.DexScreen.setStyleSheet("image: url(:/newPrefix/dexxx.png);")
+        self.DexScreen.setStyleSheet("image: url(:/newPrefix/Images/dexxx.png);")
         self.DexScreen.setObjectName("DexScreen")
         self.layoutWidget2 = QtWidgets.QWidget(self.CentralView)
         self.layoutWidget2.setGeometry(QtCore.QRect(100, 10, 591, 67))
@@ -57,7 +59,7 @@ class Ui_PokeIA(object):
         self.TitleLayout.setContentsMargins(0, 0, 0, 0)
         self.TitleLayout.setObjectName("TitleLayout")
         self.Logo1 = QtWidgets.QLabel(self.layoutWidget2)
-        self.Logo1.setStyleSheet("image: url(:/newPrefix/pokeball.png);")
+        self.Logo1.setStyleSheet("image: url(:/newPrefix/Images/pokeball.png);")
         self.Logo1.setText("")
         self.Logo1.setObjectName("Logo1")
         self.TitleLayout.addWidget(self.Logo1)
@@ -68,7 +70,7 @@ class Ui_PokeIA(object):
         self.Title.setObjectName("Title")
         self.TitleLayout.addWidget(self.Title)
         self.Logo2 = QtWidgets.QLabel(self.layoutWidget2)
-        self.Logo2.setStyleSheet("image: url(:/newPrefix/pokeball.png);")
+        self.Logo2.setStyleSheet("image: url(:/newPrefix/Images/pokeball.png);")
         self.Logo2.setObjectName("Logo2")
         self.TitleLayout.addWidget(self.Logo2)
         ###### IMAGE POKE ######
@@ -86,7 +88,8 @@ class Ui_PokeIA(object):
         self.PokeSpec = QtWidgets.QLabel(self.CentralView)
         self.PokeSpec.setGeometry(QtCore.QRect(280, 190, 191, 241))
         self.PokeSpec.setObjectName("PokeSpec")
-        self.PokeSpec.setStyleSheet("Background-color: rgb(255,255,255);")
+        self.PokeSpec.setScaledContents(True)
+        #self.PokeSpec.setStyleSheet("Background-color: rgb(255,255,255);")
 
         ###### LINK Tensorboard ######
 
@@ -98,7 +101,7 @@ class Ui_PokeIA(object):
         "background-color: rgb(170, 170, 255);\n"
         "")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/newPrefix/tensorflow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/newPrefix/Images/tensorflow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.TensorboardButton.setIcon(icon1)
         self.TensorboardButton.setObjectName("TensorboardButton")
         self.TensorboardButton.clicked.connect(self.TensorboardButtonClick)
@@ -200,7 +203,6 @@ class Ui_PokeIA(object):
         self.image_path = l[0]
         print('Your image is loaded:', self.image_path)
         self.ImagePoke.setPixmap(QtGui.QPixmap(self.image_path))
-
         return self.image_path
 
     def TrainButtonClick(self):
@@ -213,13 +215,21 @@ class Ui_PokeIA(object):
          self.label,self.flag = functions_poke.Predic(self.image_path,self.name)
          print("Your image is :", self.label)
          if self.flag == True:
-             path_spec = 'Images/Spec/spec_'+ self.label +'.png'
-             self.PokeSpec.setPixmap(QtGui.QPixmap(path_spec))
+             self.path_spec = 'Images/Spec/Spec_'+ self.label +'.png'
+             print('ici')
+             self.PokeSpec.setPixmap(QtGui.QPixmap(self.path_spec))
+             print("ici")
+         else:
+             self.path_spec = 'Images/Spec/AUCUN.png'
+             self.PokeSpec.setPixmap(QtGui.QPixmap(self.path_spec))
 
     def TensorboardButtonClick(self):
-        pipe = Popen("tensorboard --logdir logs/Poke-CNN", shell=True, stdout=PIPE).stdout
-        output = pipe.read()
-        print(output)
+        worker = Worker()
+        self.threadpool.start(worker)
+        #pipe = Popen("tensorboard --logdir logs/Poke-CNN", shell=True, stdout=PIPE).stdout
+        #url = pipe.read()
+        #print(len(url))
+        #webbroser.open(url)
 
 
 
@@ -234,7 +244,23 @@ class Ui_PokeIA(object):
         self.OKButton.setText(_translate("PokeIA", "OK"))
         self.Title.setText(_translate("PokeIA", "Poke IA app"))
 
+class Worker(QRunnable):
+    '''
+    Worker thread
+    '''
 
+    @pyqtSlot()
+    def run(self):
+        '''
+        Your code goes in this function
+        '''
+        print("Thread start")
+        pipe = Popen("tensorboard --logdir logs/Poke-CNN --port=8008 ", shell=True, stdout=PIPE).communicate()[0]
+        url = pipe.decode("utf-8")
+        #url = getouput("tensorboard --logdir logs/Poke-CNN --port=8008 ")
+        print(url)
+        #webbrowser.open(url)
+        print("Thread complete")
 
 
 if __name__ == "__main__":

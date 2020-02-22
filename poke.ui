@@ -199,7 +199,7 @@ border-color: rgb(0, 0, 0);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">image: url(:/newPrefix/dexxx.png);</string>
+     <string notr="true">image: url(:/newPrefix/Images/dexxx.png);</string>
     </property>
     <property name="text">
      <string/>
@@ -252,11 +252,14 @@ border-color: rgb(0, 0, 0);</string>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>286</x>
-      <y>196</y>
+      <x>290</x>
+      <y>190</y>
       <width>181</width>
       <height>231</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">image: url(:/newPrefix/Images/Spec/Spec_Charbi.png);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>

@@ -134,7 +134,6 @@ def TrainModel(name):
     print("- t_read = %s s -" % (time.time() - start))
 
 def Predic(image_path,name):
-    ###Data preparation###
     print('###################')
     print('###### START ######')
     print('###################')
@@ -172,7 +171,7 @@ def Predic(image_path,name):
     flag = False
     predicted = model.predict(img)
     predicted_class_indices = np.argmax(predicted,axis=1)
-    print(predicted_class_indices)
+    #print(predicted_class_indices)
     pred = categ[predicted_class_indices[0]]
     if pred == poke:
         print('Success!')
@@ -188,6 +187,6 @@ def Predic(image_path,name):
     #print(results)
     print('#################')
     print('#####  DONE #####')
-    print('')
     print('#################')
+    print(' ')
     print("- t_read = %s s -" % (time.time() - start))

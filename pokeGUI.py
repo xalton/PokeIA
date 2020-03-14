@@ -121,6 +121,7 @@ class Ui_PokeIA(object):
         self.status = QtWidgets.QLabel(self.CentralView)
         self.status.setGeometry(QtCore.QRect(200, 570, 321, 20))
         self.status.setObjectName("status")
+        self.status.setStyleSheet("color: rgb(255, 255, 255);")
         self.status.setText("")
 
         self.TrainButton = QtWidgets.QPushButton(self.layoutWidget)
@@ -199,6 +200,7 @@ class Ui_PokeIA(object):
         return self.name
 
     def LoadImage(self):
+
         l = QtWidgets.QFileDialog.getOpenFileName(None,'Open File',r"/home/machinelearning/Documents/PokeIA/Dataset")
         self.image_path = l[0]
         print('Your image is loaded:', self.image_path)
